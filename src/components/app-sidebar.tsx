@@ -1,4 +1,4 @@
-import {Home, Star} from "lucide-react"
+import {Home, Heart} from "lucide-react"
 
 import {
     Sidebar,
@@ -23,7 +23,7 @@ const groups = [
             {
                 title: "Избранные",
                 url: "/favorites",
-                icon: Star,
+                icon: Heart,
             }]
     }
 ]
