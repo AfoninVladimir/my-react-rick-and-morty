@@ -1,9 +1,10 @@
 import {Origin} from "@/types/Origin.tsx";
+import {PersonageStatus} from "@/enums/PersonageStatus.tsx";
 
 export type Character = {
     id: number;
     name: string;
-    status: string;
+    status: PersonageStatus;
     species: string;
     type: string;
     gender: string;
