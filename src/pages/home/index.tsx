@@ -33,7 +33,9 @@ export default function IndexHome() {
     function UpdateTotalPage(newTotalPages: number) {
         setPaginator((prevPaginator) => ({
             ...prevPaginator,
-            totalPages: newTotalPages
+            totalPages: newTotalPages,
+            first: paginatorPage.page === 1,
+            last: newTotalPages === paginatorPage.page,
         }))
     }
 
@@ -55,34 +57,14 @@ export default function IndexHome() {
 
         }
         sendRequest();
-    }, [paginatorPage.page])
-
-    useEffect(() => {
-        const sendRequest = async () => {
-            await axiosInstance.get("/character", {
-                params: {
-                    page: paginatorPage.page,
-                    name: paginatorPage.filter.searchQuery
-                }
-            })
-                .then(response => {
-                    UpdateTotalPage(response.data.info.count);
-                    setCharacters(response.data.results ?? [])
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-
-        }
-        sendRequest();
-    }, [paginatorPage.filter.searchQuery])
+    }, [paginatorPage.page, paginatorPage.filter.searchQuery])
 
     function Search() {
         setPaginator((prevPaginator) => ({
             ...prevPaginator,
             page: 1,
             first: true,
-            last: false,
+            last: paginatorPage.totalPages === paginatorPage.page,
             filter: {
                 searchQuery: searchQuery
             }
