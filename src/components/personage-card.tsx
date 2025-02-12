@@ -6,12 +6,34 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import {Heart, HelpCircle, Skull, Star} from "lucide-react"
+import {Heart, HelpCircle, Skull} from "lucide-react"
 import {Button} from "@/components/ui/button.tsx";
 import {Character} from "@/types/Character.tsx";
 import {PersonageStatus} from "@/enums/PersonageStatus.tsx";
+import {useToast} from "@/hooks/use-toast.ts";
 
-export function PersonageCard({personage}: {personage: Character}) {
+
+export function PersonageCard({personage, favorites, setFavorites}: {
+    personage: Character,
+    favorites: number[],
+    setFavorites: React.Dispatch<React.SetStateAction<number[]>>
+}) {
+    const {toast} = useToast();
+
+    function ChangeFavorites(id: number) {
+        if (favorites.includes(id)) {
+            setFavorites((prevNumbers) => prevNumbers.filter((i) => i !== id));
+            toast({
+                title: "Персонаж удалён из избранного!",
+            });
+        } else {
+            setFavorites((prevNumbers) => [...prevNumbers, id]);
+            toast({
+                title: "Персонаж добавлен в избранное!",
+            });
+        }
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -21,21 +43,25 @@ export function PersonageCard({personage}: {personage: Character}) {
             <CardContent>
                 <CardDescription className={"text-lg"}>
                     <div className={"flex"}>
-                        Status:
-                        {/*{personage.status}*/}
-                        {personage.status === PersonageStatus.Alive && <Heart />}
-                        {personage.status === PersonageStatus.Dead && <Skull />}
-                        {personage.status === PersonageStatus.Unknown && <HelpCircle />}
+                        <p>Status:</p>
+                        {personage.status === PersonageStatus.Alive && <Heart/>}
+                        {personage.status === PersonageStatus.Dead && <Skull/>}
+                        {personage.status === PersonageStatus.Unknown && <HelpCircle/>}
                     </div>
                     <div>Species: {personage.species}</div>
-                    {/*{personage.type && <div>type: {personage.type}</div>}*/}
                     <div>Gender: {personage.gender}</div>
                 </CardDescription>
             </CardContent>
             <CardFooter>
-                <Button className={"text-lg bg-card text-card-foreground hover:bg-accent border [&_svg]:size-6"}>
+                <Button className={"text-lg bg-card text-card-foreground hover:bg-accent border [&_svg]:size-6"}
+                        onClick={() => ChangeFavorites(personage.id)}
+                >
                     Like
-                    <Star {...(personage.status !== PersonageStatus.Dead && { fill: "white" })} strokeWidth={2} />
+                    {favorites.includes(personage.id) ?
+                        <Heart fill="red" strokeWidth={2}/> :
+                        <Heart fill="white" strokeWidth={2}/>
+                    }
+
                 </Button>
             </CardFooter>
         </Card>

@@ -2,10 +2,12 @@ import {PersonageCard} from "@/components/personage-card.tsx";
 import PaginationHome from "@/components/pagination-home.tsx";
 import {Paginator} from "@/types/Paginator.tsx";
 import {useState, useEffect, SetStateAction} from "react";
-import axiosInstance from "@/middleware/axios_instance.tsx";
+import axiosInstance from "@/instances/axios_instance.tsx";
 import {Character} from "@/types/Character.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import "@/instances/localStorage_instance.tsx"
+import {localStorageGet, localStorageSet} from "@/instances/localStorage_instance.tsx";
 
 export default function IndexHome() {
     const paginator: Paginator = {
@@ -18,10 +20,14 @@ export default function IndexHome() {
             searchQuery: ""
         }
     }
-
     const [paginatorPage, setPaginator] = useState<Paginator>(paginator);
     const [characters, setCharacters] = useState<Character[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [favorites, setFavorites] = useState<number[]>(() => {
+        const localFavorites = localStorageGet<number[]>("favorites");
+        return localFavorites !== null ? localFavorites : [];
+    });
+
 
     const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSearchQuery(event.target.value);
@@ -59,6 +65,10 @@ export default function IndexHome() {
         sendRequest();
     }, [paginatorPage.page, paginatorPage.filter.searchQuery])
 
+    useEffect(() => {
+        localStorageSet<number[]>("favorites", favorites);
+    }, [favorites]);
+
     function Search() {
         setPaginator((prevPaginator) => ({
             ...prevPaginator,
@@ -91,7 +101,7 @@ export default function IndexHome() {
             <PaginationHome paginatorPage={paginatorPage} setPaginator={setPaginator}></PaginationHome>
             <div className={"grid grid-cols-4 gap-4 mt-8"}>
                 {characters.map((character) => (
-                    <PersonageCard personage={character}></PersonageCard>
+                    <PersonageCard personage={character} favorites={favorites} setFavorites={setFavorites}></PersonageCard>
                 ))}
             </div>
             <PaginationHome paginatorPage={paginatorPage} setPaginator={setPaginator}></PaginationHome>

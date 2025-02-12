@@ -9,6 +9,7 @@ import ErrorPage from "./pages/error/error.tsx";
 import { CookiesProvider } from 'react-cookie';
 import Personage from "@/pages/personage/personage.tsx";
 import Favorites from "@/pages/favorites/favorites.tsx";
+import {Toaster} from "@/components/ui/toaster.tsx";
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <CookiesProvider defaultSetOptions={{ path: '/' }}>
           <Layout>
               <RouterProvider router={router} />
+              <Toaster />
           </Layout>
       </CookiesProvider>
   </React.StrictMode>,
