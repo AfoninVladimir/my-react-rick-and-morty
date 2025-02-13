@@ -37,8 +37,10 @@ export function PersonageCard({personage, favorites, setFavorites}: {
     return (
         <Card>
             <CardHeader>
-                <img src={personage.image} alt={personage.name} className={"border rounded-xl"}/>
-                <CardTitle className={"text-center"}>{personage.name}</CardTitle>
+                <a href={`personage/${personage.id}`} target={"_blank"}>
+                    <img src={personage.image} alt={personage.name} className={"border rounded-xl"}/>
+                    <CardTitle className={"text-center"}>{personage.name}</CardTitle>
+                </a>
             </CardHeader>
             <CardContent>
                 <CardDescription className={"text-lg"}>

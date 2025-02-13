@@ -11,10 +11,6 @@ export default function IndexFavorites() {
         const localFavorites = localStorageGet<number[]>("favorites");
         return localFavorites !== null ? localFavorites : [];
     });
-
-
-
-
     useEffect(() => {
         const sendRequest = async () => {
             await axiosInstance.get(`/character/${favorites}`)

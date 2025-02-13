@@ -6,6 +6,7 @@ import {
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
+    SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem, SidebarTrigger,
@@ -30,7 +31,9 @@ const groups = [
 export function AppSidebar() {
     return (
         <Sidebar variant="floating" collapsible="icon">
-            <SidebarTrigger />
+            <SidebarHeader>
+                <SidebarTrigger />
+            </SidebarHeader>
             <SidebarContent>
                 {
                     groups.map((group) => (

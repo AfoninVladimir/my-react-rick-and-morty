@@ -1,4 +1,5 @@
 import {Origin} from "@/types/Origin.tsx";
+import {Location} from "@/types/Location.tsx";
 import {PersonageStatus} from "@/enums/PersonageStatus.tsx";
 
 export type Character = {
