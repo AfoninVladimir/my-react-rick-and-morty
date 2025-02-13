@@ -13,14 +13,17 @@ export default function IndexFavorites() {
     });
     useEffect(() => {
         const sendRequest = async () => {
+            if (favorites.length === 0) {
+                setCharacters([]);
+                return;
+            }
             await axiosInstance.get(`/character/${favorites}`)
                 .then(response => {
-                    setCharacters(response.data ?? [])
+                    setCharacters(Array.isArray(response.data) ? response.data : [response.data]);
                 })
                 .catch(error => {
                     console.log(error);
                 })
-
         }
         sendRequest();
     },[favorites])
@@ -28,7 +31,7 @@ export default function IndexFavorites() {
     useEffect(() => {
         localStorageSet<number[]>("favorites", favorites);
     }, [favorites]);
-
+console.log(characters)
     return (
         <>
             <div className={"grid grid-cols-4 gap-4 mt-8"}>
@@ -36,6 +39,7 @@ export default function IndexFavorites() {
                     <PersonageCard personage={character} favorites={favorites} setFavorites={setFavorites}></PersonageCard>
                 ))}
             </div>
+            {favorites.length == 0 ? <h1>Список избранных пуст. Добавьте персонажей с главной страницы!</h1> : ""}
         </>
     )
 }
