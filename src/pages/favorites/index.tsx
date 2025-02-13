@@ -17,9 +17,9 @@ export default function IndexFavorites() {
                 setCharacters([]);
                 return;
             }
-            await axiosInstance.get(`/character/${favorites}`)
+            await axiosInstance.get(`/character/[${favorites}]`)
                 .then(response => {
-                    setCharacters(Array.isArray(response.data) ? response.data : [response.data]);
+                    setCharacters(response.data ?? [])
                 })
                 .catch(error => {
                     console.log(error);
