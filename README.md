@@ -48,3 +48,5 @@ export default tseslint.config({
   },
 })
 ```
+https://github.com/spaceappru/test-task
+https://rickandmortyapi.com/
